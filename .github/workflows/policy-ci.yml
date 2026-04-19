@@ -1,0 +1,30 @@
+name: Policy CI
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, edited, synchronize, reopened]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install conftest
+        shell: bash
+        run: |
+          set -euo pipefail
+          version="0.68.2"
+          archive="conftest_${version}_Linux_x86_64.tar.gz"
+          url="https://github.com/open-policy-agent/conftest/releases/download/v${version}/${archive}"
+          curl -fsSL "$url" | tar -xz
+          sudo mv conftest /usr/local/bin/conftest
+
+      - name: Verify Rego tests
+        run: conftest verify --policy policy
