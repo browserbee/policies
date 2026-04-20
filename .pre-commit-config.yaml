@@ -1,0 +1,58 @@
+---
+# Pre-commit hooks for policies (OPA / Rego)
+# Setup: pre-commit install
+# Requires: opa installed (https://www.openpolicyagent.org/docs/latest/#1-download-opa)
+
+default_stages: [pre-commit]
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-merge-conflict
+      - id: check-added-large-files
+        args: [--maxkb=500]
+      - id: detect-private-key
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.3
+    hooks:
+      - id: gitleaks
+
+  - repo: https://github.com/compilerla/conventional-pre-commit
+    rev: v3.6.0
+    hooks:
+      - id: conventional-pre-commit
+        stages: [commit-msg]
+
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.44.0
+    hooks:
+      - id: markdownlint
+        args: [--fix]
+
+  - repo: local
+    hooks:
+      - id: opa-fmt
+        name: OPA fmt (format Rego files)
+        language: system
+        entry: bash -c 'opa fmt --write "$@"'
+        types_or: [file]
+        files: \.rego$
+
+      - id: opa-check
+        name: OPA check (syntax validation)
+        language: system
+        entry: bash -c 'opa check "$@"'
+        files: \.rego$
+
+      - id: opa-test
+        name: OPA test (run policy tests)
+        language: system
+        entry: opa test ./policy -v
+        files: \.rego$
+        pass_filenames: false
