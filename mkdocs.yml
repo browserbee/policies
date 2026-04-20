@@ -1,0 +1,8 @@
+site_name: Browserbee Policies
+site_description: Organization policies and governance documentation
+theme:
+  name: material
+docs_dir: docs
+site_dir: site
+nav:
+  - Home: index.md
