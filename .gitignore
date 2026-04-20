@@ -1,0 +1,7 @@
+# qlty cache
+.qlty/configs
+.qlty/logs
+.qlty/out
+.qlty/plugin_cachedir
+.qlty/results
+.qlty/sources
