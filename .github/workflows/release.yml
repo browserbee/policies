@@ -17,7 +17,7 @@ jobs:
   publish-policy:
     needs: release
     if: needs.release.outputs.new-release-published == 'true'
-    uses: browserbee/.github/.github/workflows/publish-policy-bundle.yml@e08dbf48d0f494b91917dec89d0f826d7b9c349b
+    uses: browserbee/.github/.github/workflows/publish-policy-bundle.yml@main
     with:
       version: ${{ needs.release.outputs.new-release-version }}
       policy-path: policy
