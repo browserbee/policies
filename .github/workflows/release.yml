@@ -10,10 +10,15 @@ permissions:
 
 jobs:
   release:
+    permissions:
+      contents: write
+      pull-requests: write
     uses: browserbee/.github/.github/workflows/semantic-release.yml@main
     secrets: inherit
 
   publish-policy:
+    permissions:
+      contents: read
     needs: release
     if: needs.release.outputs.new-release-published == 'true'
     uses: browserbee/.github/.github/workflows/publish-policy-bundle.yml@main
