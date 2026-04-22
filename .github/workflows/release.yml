@@ -5,6 +5,10 @@ on:
     branches: [main]
   workflow_dispatch:
 
+permissions:
+  contents: write
+  packages: write
+
 jobs:
   release:
     uses: browserbee/.github/.github/workflows/semantic-release.yml@main
@@ -13,7 +17,7 @@ jobs:
   publish-policy:
     needs: release
     if: needs.release.outputs.new-release-published == 'true'
-    uses: browserbee/.github/.github/workflows/publish-policy-bundle.yml@main
+    uses: browserbee/.github/.github/workflows/publish-policy-bundle.yml@e08dbf48d0f494b91917dec89d0f826d7b9c349b
     with:
       version: ${{ needs.release.outputs.new-release-version }}
       policy-path: policy
