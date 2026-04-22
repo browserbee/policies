@@ -7,13 +7,13 @@ on:
 
 jobs:
   release:
-    uses: containerly/.github/.github/workflows/semantic-release.yml@main
+    uses: browserbee/.github/.github/workflows/semantic-release.yml@main
     secrets: inherit
 
   publish-policy:
     needs: release
     if: needs.release.outputs.new-release-published == 'true'
-    uses: containerly/.github/.github/workflows/publish-policy-bundle.yml@main
+    uses: browserbee/.github/.github/workflows/publish-policy-bundle.yml@main
     with:
       version: ${{ needs.release.outputs.new-release-version }}
       policy-path: policy
